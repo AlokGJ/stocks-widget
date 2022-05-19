@@ -1,12 +1,13 @@
 import { Card } from "semantic-ui-react";
-import { useState, useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { useQuery } from "react-query";
 
 const fetchSearchQueryResults = (symbols) => {
   return Promise.all(
     symbols.map((symbol) =>
       fetch(
-        `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=37U54N5NZNKPRVZG`
+        // `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=37U54N5NZNKPRVZG`
+        `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=demo`
       ).then((response) => response.json())
     )
   );
@@ -26,18 +27,20 @@ const StocksWidget = ({ symbols }) => {
     if (symbols.length) refetchResults();
   }, [symbols.length, refetchResults]);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   return (
     <>
       <Card.Group>
         {data &&
           data.map((stock) => {
-            if (!stock || !Object.keys(stock).length || stock.Note) return null;
+            if (
+              !stock ||
+              !Object.keys(stock).length ||
+              stock.Note ||
+              stock.Information
+            )
+              return null;
             return (
-              <Card>
+              <Card fluid>
                 <Card.Content>
                   <Card.Header>{stock.Symbol}</Card.Header>
                   <Card.Meta>{stock.Name}</Card.Meta>
@@ -46,6 +49,7 @@ const StocksWidget = ({ symbols }) => {
             );
           })}
       </Card.Group>
+      {!data && "No data found"}
     </>
   );
 };

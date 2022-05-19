@@ -4,14 +4,15 @@ import { useQuery } from "react-query";
 
 const searchQueryFetcher = async (query) => {
   return await fetch(
-    `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${query}&apikey=37U54N5NZNKPRVZG`
+    // `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${query}&apikey=37U54N5NZNKPRVZG`
+    `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${query}&apikey=demo`
   ).then((response) => response.json());
 };
 
 const SearchWidget = ({ onSearch, symbols }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOptions, setSearchOptions] = useState([]);
-  // const [value, setValue] = useState([]);
+
   const { data, refetch, isFetching } = useQuery(
     ["search", searchQuery],
     () => searchQueryFetcher(searchQuery),
