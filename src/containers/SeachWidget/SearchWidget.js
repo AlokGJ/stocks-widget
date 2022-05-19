@@ -1,13 +1,6 @@
 import { Dropdown } from "semantic-ui-react";
 import { useState, useEffect, useCallback } from "react";
 import { useQuery } from "react-query";
-// import _ from "lodash";
-
-const fetchSearchQueryResults = async (symbol) => {
-  return await fetch(
-    `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=37U54N5NZNKPRVZG`
-  ).then((response) => response.json());
-};
 
 const searchQueryFetcher = async (query) => {
   return await fetch(

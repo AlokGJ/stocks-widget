@@ -2,7 +2,7 @@ import { Card } from "semantic-ui-react";
 import { useState, useEffect, useCallback } from "react";
 import { useQuery } from "react-query";
 
-const fetchSearchQueryResults = async (symbols) => {
+const fetchSearchQueryResults = (symbols) => {
   return Promise.all(
     symbols.map((symbol) =>
       fetch(
