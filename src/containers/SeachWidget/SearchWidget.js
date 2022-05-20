@@ -1,11 +1,12 @@
 import { Dropdown } from "semantic-ui-react";
 import { useState, useEffect, useCallback } from "react";
 import { useQuery } from "react-query";
+import _ from "lodash";
 
 const searchQueryFetcher = async (query) => {
   return await fetch(
-    // `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${query}&apikey=37U54N5NZNKPRVZG`
-    `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${query}&apikey=demo`
+    `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${query}&apikey=37U54N5NZNKPRVZG`
+    // `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${query}&apikey=demo`
   ).then((response) => response.json());
 };
 
@@ -17,8 +18,8 @@ const SearchWidget = ({ onSearch, symbols }) => {
     ["search", searchQuery],
     () => searchQueryFetcher(searchQuery),
     {
-      refetchOnWindowFocus: false,
-      enabled: false
+      refetchOnWindowFocus: false
+      // enabled: false
     }
   );
 
@@ -28,7 +29,7 @@ const SearchWidget = ({ onSearch, symbols }) => {
 
   const handleChange = useCallback(
     async (e, data) => {
-      setSearchQuery(() => data.searchQuery);
+      setSearchQuery(() => "");
       onSearch(() => data.value);
     },
     [onSearch]
@@ -36,13 +37,13 @@ const SearchWidget = ({ onSearch, symbols }) => {
 
   const handleAddition = useCallback((e, { value }) => {
     setSearchOptions((options) => [
-      { text: value, key: value, value },
-      ...options
+      ...options,
+      { text: value, key: value, value }
     ]);
   }, []);
 
   useEffect(() => {
-    refetch();
+    _.debounce(refetch, 500, { leading: true });
   }, [searchQuery, refetch]);
 
   useEffect(() => {
