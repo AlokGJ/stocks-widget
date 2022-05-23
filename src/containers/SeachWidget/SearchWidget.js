@@ -1,7 +1,9 @@
-import { Dropdown } from "semantic-ui-react";
+import { Search } from "semantic-ui-react";
 import { useState, useEffect, useCallback } from "react";
 import { useQuery } from "react-query";
 import _ from "lodash";
+
+import "./search-widget.css";
 
 const searchQueryFetcher = async (query) => {
   return await fetch(
@@ -10,70 +12,50 @@ const searchQueryFetcher = async (query) => {
   ).then((response) => response.json());
 };
 
-const SearchWidget = ({ onSearch, symbols }) => {
+const SearchWidget = ({ onSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOptions, setSearchOptions] = useState([]);
 
-  const { data, refetch, isFetching } = useQuery(
+  const { data, isFetching } = useQuery(
     ["search", searchQuery],
     () => searchQueryFetcher(searchQuery),
     {
-      refetchOnWindowFocus: false
-      // enabled: false
+      refetchOnWindowFocus: false,
+      enabled: !!searchQuery
     }
   );
 
   const handleSearchChange = useCallback(async (e, data) => {
-    setSearchQuery(() => data.searchQuery);
+    setSearchQuery(() => data.value);
   }, []);
 
   const handleChange = useCallback(
-    async (e, data) => {
+    (e, data) => {
       setSearchQuery(() => "");
-      onSearch(() => data.value);
+      console.log(data);
+      onSearch(data.result.title);
     },
     [onSearch]
   );
-
-  const handleAddition = useCallback((e, { value }) => {
-    setSearchOptions((options) => [
-      ...options,
-      { text: value, key: value, value }
-    ]);
-  }, []);
-
-  useEffect(() => {
-    _.debounce(refetch, 500, { leading: true });
-  }, [searchQuery, refetch]);
 
   useEffect(() => {
     if (data && data.bestMatches?.length) {
       setSearchOptions(() =>
         data.bestMatches.map(({ "1. symbol": symbol }) => ({
-          key: symbol,
-          text: symbol,
-          value: symbol
+          title: symbol
         }))
       );
     }
   }, [data]);
   return (
-    <Dropdown
-      lazyLoad
+    <Search
       placeholder="Stock search..."
       fluid
-      multiple
-      searchQuery={searchQuery}
-      search
-      selection
-      options={searchOptions}
-      icon="search"
+      input={{ icon: "search", iconPosition: "left" }}
       loading={isFetching}
-      onChange={handleChange}
-      onSearchChange={handleSearchChange}
-      value={symbols}
-      allowAdditions
-      onAddItem={handleAddition}
+      onResultSelect={handleChange}
+      onSearchChange={_.debounce(handleSearchChange, 500)}
+      results={searchOptions}
     />
   );
 };

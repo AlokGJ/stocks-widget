@@ -15,7 +15,7 @@ const fetchSearchQueryResults = (symbols) => {
 
 const StocksWidget = ({ symbols }) => {
   const [refetchIntervalInMillis, setRefetchIntervalInMillis] = useState(15000);
-  const { data, refetch: refetchResults } = useQuery(
+  const { data, refetch: refetchResults, isSuccess } = useQuery(
     ["results", symbols],
     () => fetchSearchQueryResults(symbols),
     {
@@ -37,10 +37,14 @@ const StocksWidget = ({ symbols }) => {
       <section style={{ display: "flex", flexDirection: "column" }}>
         <div>
           <Segment
-            floated="right"
             basic
-            style={{ margin: 0, paddingTop: 0, paddingRight: 0 }}
+            style={{
+              padding: 0,
+              display: "flex",
+              justifyContent: "space-between"
+            }}
           >
+            <Label>{`Results: ${symbols.length}`}</Label>
             <Label>
               {"Refresh every: "}
               <Dropdown
@@ -54,14 +58,15 @@ const StocksWidget = ({ symbols }) => {
             </Label>
           </Segment>
         </div>
-        <Card.Group>
+        <Card.Group style={{ paddingTop: "10px" }}>
           {data &&
             data.map((stock) => {
               if (
-                !stock ||
-                !Object.keys(stock).length ||
-                stock.Note ||
-                stock.Information
+                (!stock ||
+                  !Object.keys(stock).length ||
+                  stock.Note ||
+                  stock.Information,
+                isSuccess)
               )
                 return null;
               return (
@@ -100,7 +105,6 @@ const StocksWidget = ({ symbols }) => {
               );
             })}
         </Card.Group>
-        {!data && "No data found"}
       </section>
     </>
   );
