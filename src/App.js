@@ -9,9 +9,13 @@ const queryClient = new QueryClient();
 export default function App() {
   const [symbols, setSymbols] = useState([]);
 
-  const handleSymbolSelect = useCallback((newSymbol) => {
-    setSymbols((symbols) => [...symbols, newSymbol]);
-  }, []);
+  const handleSymbolSelect = useCallback(
+    (newSymbol) => {
+      if (!symbols.includes(newSymbol))
+        setSymbols((symbols) => [...symbols, newSymbol]);
+    },
+    [symbols]
+  );
 
   const handleClearSymbol = useCallback((symbolToDelete) => {
     setSymbols((prevSymbols) =>

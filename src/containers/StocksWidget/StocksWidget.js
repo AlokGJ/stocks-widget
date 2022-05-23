@@ -62,11 +62,10 @@ const StocksWidget = ({ symbols }) => {
           {data &&
             data.map((stock) => {
               if (
-                (!stock ||
-                  !Object.keys(stock).length ||
-                  stock.Note ||
-                  stock.Information,
-                isSuccess)
+                !stock ||
+                !Object.keys(stock).length ||
+                stock.Note ||
+                stock.Information
               )
                 return null;
               return (
