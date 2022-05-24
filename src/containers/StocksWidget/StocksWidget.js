@@ -15,17 +15,13 @@ const fetchSearchQueryResults = (symbols) => {
 
 const StocksWidget = ({ symbols }) => {
   const [refetchIntervalInMillis, setRefetchIntervalInMillis] = useState(15000);
-  const { data, refetch: refetchResults, isSuccess } = useQuery(
+  const { data } = useQuery(
     ["results", symbols],
     () => fetchSearchQueryResults(symbols),
     {
       refetchInterval: refetchIntervalInMillis
     }
   );
-
-  useEffect(() => {
-    symbols.length && refetchResults();
-  }, [symbols.length, refetchResults]);
 
   const handleRefreshRateChange = useCallback(
     (_, data) => setRefetchIntervalInMillis(data.value),
