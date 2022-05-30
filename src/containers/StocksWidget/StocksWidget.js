@@ -3,9 +3,12 @@ import timerOptions from "./timer-options";
 import { useStocks } from "../../hooks/useStocks";
 
 const StocksWidget = ({ symbols }) => {
-  const { data, handleRefreshRateChange, refetchIntervalInMillis } = useStocks(
-    symbols
-  );
+  const {
+    data,
+    handleRefreshRateChange,
+    refetchIntervalInMillis,
+    isRefetching
+  } = useStocks(symbols);
 
   return (
     <>
@@ -46,7 +49,9 @@ const StocksWidget = ({ symbols }) => {
               return (
                 <Card fluid>
                   <Card.Content>
-                    <Card.Header>{stock.Symbol}</Card.Header>
+                    <Card.Header>{`${stock.Symbol} ${
+                      isRefetching ? "Loading..." : ""
+                    }`}</Card.Header>
                     <Card.Meta>{stock.Name}</Card.Meta>
                     <Item.Group>
                       <Item>

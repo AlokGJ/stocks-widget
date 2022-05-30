@@ -4,7 +4,7 @@ import { fetchSearchQueryResults } from "../api";
 
 export const useStocks = (symbols) => {
   const [refetchIntervalInMillis, setRefetchIntervalInMillis] = useState(15000);
-  const { data } = useQuery(
+  const { data, isRefetching } = useQuery(
     ["results", symbols],
     () => fetchSearchQueryResults(symbols),
     {
@@ -20,6 +20,7 @@ export const useStocks = (symbols) => {
   return {
     data,
     handleRefreshRateChange,
-    refetchIntervalInMillis
+    refetchIntervalInMillis,
+    isRefetching
   };
 };

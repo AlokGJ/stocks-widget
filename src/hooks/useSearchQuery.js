@@ -21,7 +21,6 @@ export const useSearchQuery = (onSearch) => {
   const handleChange = useCallback(
     (e, data) => {
       setSearchQuery(() => "");
-      console.log(data);
       onSearch(data.result.title);
     },
     [onSearch]
