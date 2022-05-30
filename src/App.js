@@ -6,7 +6,7 @@ import "./styles.css";
 
 const queryClient = new QueryClient();
 
-export default function App() {
+const useSymbols = () => {
   const [symbols, setSymbols] = useState([]);
 
   const handleSymbolSelect = useCallback(
@@ -22,6 +22,16 @@ export default function App() {
       prevSymbols.filter((symbol) => symbol !== symbolToDelete)
     );
   }, []);
+
+  return {
+    symbols,
+    handleClearSymbol,
+    handleSymbolSelect
+  };
+};
+
+export default function App() {
+  const { symbols, handleSymbolSelect, handleClearSymbol } = useSymbols();
 
   return (
     <Container fluid>

@@ -1,31 +1,10 @@
 import { Card, Dropdown, Item, Label, Segment } from "semantic-ui-react";
-import { useCallback, useEffect, useState } from "react";
-import { useQuery } from "react-query";
 import timerOptions from "./timer-options";
-
-const fetchSearchQueryResults = (symbols) => {
-  return Promise.all(
-    symbols.map((symbol) =>
-      fetch(
-        `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=37U54N5NZNKPRVZG`
-      ).then((response) => response.json())
-    )
-  );
-};
+import { useStocks } from "../../hooks/useStocks";
 
 const StocksWidget = ({ symbols }) => {
-  const [refetchIntervalInMillis, setRefetchIntervalInMillis] = useState(15000);
-  const { data } = useQuery(
-    ["results", symbols],
-    () => fetchSearchQueryResults(symbols),
-    {
-      refetchInterval: refetchIntervalInMillis
-    }
-  );
-
-  const handleRefreshRateChange = useCallback(
-    (_, data) => setRefetchIntervalInMillis(data.value),
-    [setRefetchIntervalInMillis]
+  const { data, handleRefreshRateChange, refetchIntervalInMillis } = useStocks(
+    symbols
   );
 
   return (
