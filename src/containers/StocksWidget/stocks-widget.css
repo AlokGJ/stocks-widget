@@ -1,0 +1,10 @@
+.card-group {
+  display: flex;
+  justify-content: stretch !important;
+}
+
+@media (min-width: 42rem) {
+  .card-group .card {
+    flex-basis: 28rem;
+  }
+}
