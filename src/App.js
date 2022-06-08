@@ -23,15 +23,25 @@ const useSymbols = () => {
     );
   }, []);
 
+  const handleClearAllSymbols = useCallback(() => {
+    setSymbols(() => []);
+  }, []);
+
   return {
     symbols,
     handleClearSymbol,
-    handleSymbolSelect
+    handleSymbolSelect,
+    handleClearAllSymbols
   };
 };
 
 export default function App() {
-  const { symbols, handleSymbolSelect, handleClearSymbol } = useSymbols();
+  const {
+    symbols,
+    handleSymbolSelect,
+    handleClearSymbol,
+    handleClearAllSymbols
+  } = useSymbols();
 
   return (
     <Container fluid>
@@ -41,6 +51,12 @@ export default function App() {
         </Segment>
         <Segment basic style={{ paddingTop: 0, paddingBottom: 0, margin: 0 }}>
           Queries:{" "}
+          {symbols.length ? (
+            <Label>
+              Clear All
+              <Icon name="close" onClick={() => handleClearAllSymbols([])} />
+            </Label>
+          ) : null}
           {symbols.map((symbol) => (
             <Label>
               {symbol}
