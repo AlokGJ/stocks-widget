@@ -11,7 +11,10 @@ export const useSearchQuery = (onSearch) => {
     () => searchQueryFetcher(searchQuery),
     {
       refetchOnWindowFocus: false,
-      enabled: !!searchQuery
+      enabled: !!searchQuery,
+      onError(error) {
+        console.error(error);
+      }
     }
   );
 

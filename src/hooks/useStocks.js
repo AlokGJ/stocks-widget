@@ -8,7 +8,10 @@ export const useStocks = (symbols) => {
     ["results", symbols],
     () => fetchSearchQueryResults(symbols),
     {
-      refetchInterval: refetchIntervalInMillis
+      refetchInterval: refetchIntervalInMillis,
+      onError(error) {
+        console.error(error);
+      }
     }
   );
 
