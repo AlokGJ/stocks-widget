@@ -27,7 +27,9 @@ export default function App() {
               Clear All
               <Icon name="close" onClick={() => handleClearAllSymbols([])} />
             </Label>
-          ) : null}
+          ) : (
+            "--"
+          )}
           {symbols.map((symbol) => (
             <Label>
               {symbol}

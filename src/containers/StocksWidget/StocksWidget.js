@@ -23,8 +23,8 @@ const StocksWidget = ({ symbols }) => {
               justifyContent: "space-between"
             }}
           >
-            <Label>{`Results: ${symbols.length}`}</Label>
-            <Label>
+            <Label key="result">{`Results: ${symbols.length}`}</Label>
+            <Label key="query-time">
               {"Refresh every: "}
               <Dropdown
                 labeled

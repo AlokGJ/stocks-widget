@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useQuery } from "react-query";
 import { searchQueryFetcher } from "../api";
+
 export const useSearchQuery = (onSearch) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOptions, setSearchOptions] = useState([]);
@@ -14,7 +15,7 @@ export const useSearchQuery = (onSearch) => {
     }
   );
 
-  const handleSearchChange = useCallback(async (e, data) => {
+  const handleSearchChange = useCallback((e, data) => {
     setSearchQuery(() => data.value);
   }, []);
 

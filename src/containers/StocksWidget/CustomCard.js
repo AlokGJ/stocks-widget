@@ -1,11 +1,12 @@
-import { Card, Divider, Item } from "semantic-ui-react";
+import { Card, Divider, Item, Loader } from "semantic-ui-react";
 
 const CustomCard = ({ stock, index, isFetching }) => (
   <Card className="card" fluid key={index}>
     <Card.Content>
-      <Card.Header>{`${stock.Symbol} ${
-        isFetching ? " Loading..." : ""
-      }`}</Card.Header>
+      <Card.Header>
+        {`${stock.Symbol} `}
+        {isFetching ? <Loader active inline size="tiny" /> : ""}
+      </Card.Header>
       <Card.Meta>{stock.Name}</Card.Meta>
       <Divider />
       <Item.Group>
@@ -15,25 +16,31 @@ const CustomCard = ({ stock, index, isFetching }) => (
             <Item.Meta>{stock.Industry}</Item.Meta>
           </Item.Content>
         </Item>
-        <Item>
+        <Item key={`traded${index}`}>
           <Item.Content>
             <Item.Header>Last traded on</Item.Header>
-            <Item.Meta>{stock["Meta Data"]["3. Last Refreshed"]}</Item.Meta>
-          </Item.Content>
-        </Item>
-        <Item>
-          <Item.Content>
-            <Item.Header>Stock Price</Item.Header>
             <Item.Meta>
-              {
-                stock["Time Series (Daily)"][
-                  stock["Meta Data"]["3. Last Refreshed"]
-                ]["4. close"]
-              }
+              {stock["Meta Data"]["3. Last Refreshed"]
+                ? stock["Meta Data"]["3. Last Refreshed"]
+                : "--"}
             </Item.Meta>
           </Item.Content>
         </Item>
-        <Item>
+        <Item key={`price${index}`}>
+          <Item.Content>
+            <Item.Header>Stock Price</Item.Header>
+            <Item.Meta>
+              {stock["Time Series (Daily)"][
+                stock["Meta Data"]["3. Last Refreshed"]
+              ]["4. close"]
+                ? stock["Time Series (Daily)"][
+                    stock["Meta Data"]["3. Last Refreshed"]
+                  ]["4. close"]
+                : "--"}
+            </Item.Meta>
+          </Item.Content>
+        </Item>
+        <Item key={`desc${index}`}>
           <Item.Content>
             <Item.Header>Description</Item.Header>
             <Item.Meta>{stock.Description}</Item.Meta>
